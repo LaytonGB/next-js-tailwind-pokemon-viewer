@@ -1,51 +1,66 @@
+"use client";
+
 import Image from "next/image";
 
-import { PokemonList, PokemonResult, Type } from "./endpointData";
+import { Pokemon, Type } from "../endpointData";
+import { getAllDetails } from "@/pokeApi";
+import AlertList, { useAlerts } from "@/components/Alert";
+import { useEffect, useState } from "react";
 
-export default async function Home() {
-  const offset = 0;
-  const resultsPerPage = 10;
-  const res = await fetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=${resultsPerPage}&offset=${offset}`
-  );
-  const pokemonList: PokemonList = await res.json();
+export function PokeApp() {
+  const { addAlert } = useAlerts();
 
-  const displayPokemon = (pokemon: PokemonList) => {
-    return pokemon.results.map(
-      async (pokemonResult: PokemonResult, index: number) => {
-        const res = await fetch(pokemonResult.url);
-        const pokemon = await res.json();
+  const [offset, setOffset] = useState<number>(0);
+  const [resultsPerPage, setResultsPerPage] = useState<number>(10);
+  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
 
-        return (
-          <tr key={index}>
-            <td>
-              <Image
-                src={pokemon.sprites.front_default}
-                width={100}
-                height={100}
-                alt={pokemon.name}
-              />
-            </td>
-            <td>
-              {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-            </td>
-            <td>
-              {pokemon.types
-                .map(
-                  (type: Type) =>
-                    type.type.name.charAt(0).toUpperCase() +
-                    type.type.name.slice(1)
-                )
-                .reduce((a: string, b: string) => a + " / " + b)}
-            </td>
-          </tr>
-        );
+  function displayPokemon(): JSX.Element[] {
+    return pokemonList.map((pokemon: Pokemon, index: number) => {
+      return (
+        <tr key={index}>
+          <td>
+            <Image
+              src={pokemon.sprites.front_default}
+              width={100}
+              height={100}
+              alt={pokemon.name}
+            />
+          </td>
+          <td>
+            {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+          </td>
+          <td>
+            {pokemon.types
+              .map(
+                (type: Type) =>
+                  type.type.name.charAt(0).toUpperCase() +
+                  type.type.name.slice(1)
+              )
+              .reduce((a: string, b: string) => a + " / " + b)}
+          </td>
+        </tr>
+      );
+    });
+  }
+
+  useEffect(() => {
+    async function fetchPokemon() {
+      try {
+        const pokemonList = await getAllDetails(resultsPerPage, offset);
+        setPokemonList(pokemonList);
+      } catch (error) {
+        console.error(error);
+        addAlert("Failed to fetch Pokémon", "error");
+        return [];
       }
-    );
-  };
+    }
+
+    fetchPokemon();
+  }, [resultsPerPage, offset]);
 
   return (
     <div>
+      <AlertList />
       <h1>Pokémon Viewer</h1>
       <table>
         <thead>
@@ -55,8 +70,10 @@ export default async function Home() {
             <th>Type</th>
           </tr>
         </thead>
-        <tbody>{displayPokemon(pokemonList)}</tbody>
+        <tbody>{displayPokemon()}</tbody>
       </table>
     </div>
   );
 }
+
+export default PokeApp;

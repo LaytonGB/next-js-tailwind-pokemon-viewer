@@ -127,6 +127,8 @@ export interface Sprites {
     | Sprites
     | { [spriteName: string]: Sprites }
     | { [generationName: string]: { [versionName: string]: Sprites } };
+  front_default: string;
+  back_default: string;
   other: { [otherName: string]: Sprites };
   versions: { [generationName: string]: { [versionName: string]: Sprites } };
 }
