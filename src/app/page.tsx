@@ -52,6 +52,11 @@ export function PokeApp() {
   }
 
   async function searchForPokemon(name: string) {
+    if (!name) {
+      addAlert("Please enter a Pokémon name.", "warning");
+      return;
+    }
+
     try {
       const pokemon = await getOneByName(name);
       setPokemonDetails([pokemon]);
