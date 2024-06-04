@@ -34,7 +34,10 @@ export function PokeApp() {
   function displayPokemon(): JSX.Element[] {
     return pokemonDetails.map((pokemon: Pokemon, index: number) => {
       return (
-        <tr key={index}>
+        <tr
+          key={index}
+          className="[&:not(:last-child)]:border-b first:*:last:rounded-bl last:*:last:rounded-br even:bg-slate-100 dark:even:bg-slate-900"
+        >
           <td>
             <Image
               src={pokemon.sprites.front_default}
@@ -108,7 +111,7 @@ export function PokeApp() {
   }, [resultsPerPage]);
 
   return (
-    <div className="w-5/6 my-8">
+    <div className="my-8">
       <AlertList />
 
       <h1 className="text-4xl font-bold mb-4">Pokémon Viewer</h1>
@@ -155,12 +158,12 @@ export function PokeApp() {
         </label>
       </div>
 
-      <table className="m-auto w-96 border-spacing-x-4">
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th className="text-left">Name</th>
-            <th className="text-left">Type</th>
+      <table className="m-auto w-full">
+        <thead className="border-b border-separate">
+          <tr className="bg-slate-100 dark:bg-slate-900">
+            <th className="rounded-tl w-1/3">Image</th>
+            <th className="text-left w-1/3">Name</th>
+            <th className="text-left rounded-tr w-1/3">Type</th>
           </tr>
         </thead>
         <tbody>{displayPokemon()}</tbody>
