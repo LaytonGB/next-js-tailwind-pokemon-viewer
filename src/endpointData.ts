@@ -29,7 +29,7 @@ export interface Pokemon {
   species: Species;
   sprites: Sprites;
   stats: Stat[];
-  types: Type[];
+  types: PokemonType[];
 }
 
 export interface Ability {
@@ -142,7 +142,7 @@ export interface Stat {
   };
 }
 
-export interface Type {
+export interface PokemonType {
   slot: number;
   type: {
     name: string;

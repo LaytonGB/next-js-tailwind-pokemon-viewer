@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { Pokemon, PokemonList, Type } from "../endpointData";
+import { Pokemon, PokemonList, PokemonType } from "../endpointData";
 import {
   getAllDetails,
   getNextDetails,
@@ -50,7 +50,7 @@ export function PokeApp() {
           <td>
             {pokemon.types
               .map(
-                (type: Type) =>
+                (type: PokemonType) =>
                   type.type.name.charAt(0).toUpperCase() +
                   type.type.name.slice(1)
               )
