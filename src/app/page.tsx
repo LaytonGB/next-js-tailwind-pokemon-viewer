@@ -2,20 +2,28 @@
 
 import Image from "next/image";
 
-import { Pokemon, Type } from "../endpointData";
-import { getAllDetails } from "@/pokeApi";
+import { Pokemon, PokemonList, Type } from "../endpointData";
+import {
+  getAllDetails,
+  getNextDetails,
+  getOneByName,
+  getPrevDetails,
+} from "@/pokeApi";
 import AlertList, { useAlerts } from "@/components/Alert";
 import { useEffect, useState } from "react";
 
 export function PokeApp() {
   const { addAlert } = useAlerts();
 
-  const [offset, setOffset] = useState<number>(0);
   const [resultsPerPage, setResultsPerPage] = useState<number>(10);
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+  const [searchBoxText, setSearchBoxText] = useState<string>("");
+  const [pokemonList, setPokemonList] = useState<PokemonList>(
+    {} as PokemonList
+  );
+  const [pokemonDetails, setPokemonDetails] = useState<Pokemon[]>([]);
 
   function displayPokemon(): JSX.Element[] {
-    return pokemonList.map((pokemon: Pokemon, index: number) => {
+    return pokemonDetails.map((pokemon: Pokemon, index: number) => {
       return (
         <tr key={index}>
           <td>
@@ -43,11 +51,37 @@ export function PokeApp() {
     });
   }
 
+  async function searchForPokemon(name: string) {
+    try {
+      const pokemon = await getOneByName(name);
+      setPokemonDetails([pokemon]);
+    } catch (error) {
+      console.error(error);
+      addAlert(`No such pokemon, "${searchBoxText}".`, "warning");
+    }
+  }
+
+  async function prevPage() {
+    const [nextList, nextDetails] = await getPrevDetails(pokemonList);
+    setPokemonList(nextList);
+    setPokemonDetails(nextDetails);
+  }
+
+  async function nextPage() {
+    const [nextList, nextDetails] = await getNextDetails(pokemonList);
+    setPokemonList(nextList);
+    setPokemonDetails(nextDetails);
+  }
+
   useEffect(() => {
     async function fetchPokemon() {
       try {
-        const pokemonList = await getAllDetails(resultsPerPage, offset);
-        setPokemonList(pokemonList);
+        const [nextPokemonList, nextPokemonDetails] = await getAllDetails(
+          resultsPerPage,
+          0
+        );
+        setPokemonList(nextPokemonList);
+        setPokemonDetails(nextPokemonDetails);
       } catch (error) {
         console.error(error);
         addAlert("Failed to fetch Pokémon", "error");
@@ -56,12 +90,44 @@ export function PokeApp() {
     }
 
     fetchPokemon();
-  }, [resultsPerPage, offset]);
+  }, [resultsPerPage]);
 
   return (
     <div>
       <AlertList />
+
       <h1>Pokémon Viewer</h1>
+
+      <form>
+        <label>
+          Find Pokemon:
+          <input
+            type="text"
+            onChange={(event) => setSearchBoxText(event.target.value)}
+          />
+        </label>
+        <label>
+          <button
+            type="submit"
+            onClick={(event) => {
+              event.preventDefault();
+              searchForPokemon(searchBoxText.toLowerCase());
+            }}
+          >
+            Search
+          </button>
+        </label>
+      </form>
+
+      <label>
+        Results per page:
+        <select onChange={(event) => setResultsPerPage(+event.target.value)}>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </label>
+
       <table>
         <thead>
           <tr>
@@ -72,10 +138,9 @@ export function PokeApp() {
         </thead>
         <tbody>{displayPokemon()}</tbody>
       </table>
-      <button onClick={() => setOffset(offset - resultsPerPage)}>
-        Previous
-      </button>
-      <button onClick={() => setOffset(offset + resultsPerPage)}>Next</button>
+
+      {pokemonList.previous ? <button onClick={prevPage}>Previous</button> : ""}
+      {pokemonList.next ? <button onClick={nextPage}>Next</button> : ""}
     </div>
   );
 }

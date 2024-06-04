@@ -1,6 +1,6 @@
 export interface PokemonList {
   count: number;
-  prev?: string;
+  previous?: string;
   next?: string;
   results: PokemonResult[];
 }

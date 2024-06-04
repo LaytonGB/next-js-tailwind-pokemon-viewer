@@ -19,7 +19,7 @@ async function pokeFetch(
       .join("&");
     paramStr = "?" + query;
   } else {
-    throw new Error("Invalid parameter type");
+    paramStr = "/" + params;
   }
 
   let res = await fetch(url + paramStr);
@@ -30,22 +30,55 @@ async function getAll(count: number, offset: number): Promise<PokemonList> {
   return await pokeFetch({ limit: count, offset });
 }
 
-async function getOneByUrl(url: string): Promise<Pokemon> {
+async function getOneByName(name: string): Promise<Pokemon> {
+  return await pokeFetch([name]);
+}
+
+async function getByUrl(url: string): Promise<any> {
   let res = await fetch(url);
   return await res.json();
 }
 
-async function getAllDetails(
-  count: number,
-  offset: number
-): Promise<Pokemon[]> {
-  const pokemonList = await getAll(count, offset);
+async function getDetailsFromList(list: PokemonList): Promise<Pokemon[]> {
   const pokemonDetails = await Promise.all(
-    pokemonList.results.map(async (pokemon) => {
-      return await getOneByUrl(pokemon.url);
+    list.results.map(async (pokemon) => {
+      return (await getByUrl(pokemon.url)) as Pokemon;
     })
   );
   return pokemonDetails;
 }
 
-export { getAllDetails };
+async function getNextDetails(
+  list: PokemonList
+): Promise<[PokemonList, Pokemon[]]> {
+  if (!list.next) {
+    return [list, []];
+  }
+
+  const nextPokemonList = (await getByUrl(list.next)) as PokemonList;
+  const nextPokemonDetails = await getDetailsFromList(nextPokemonList);
+  return [nextPokemonList, nextPokemonDetails];
+}
+
+async function getPrevDetails(
+  list: PokemonList
+): Promise<[PokemonList, Pokemon[]]> {
+  if (!list.previous) {
+    return [list, []];
+  }
+
+  const prevPokemonList = (await getByUrl(list.previous)) as PokemonList;
+  const prevPokemonDetails = await getDetailsFromList(prevPokemonList);
+  return [prevPokemonList, prevPokemonDetails];
+}
+
+async function getAllDetails(
+  count: number,
+  offset: number
+): Promise<[PokemonList, Pokemon[]]> {
+  const pokemonList = await getAll(count, offset);
+  const pokemonDetails = await getDetailsFromList(pokemonList);
+  return [pokemonList, pokemonDetails];
+}
+
+export { getAllDetails, getOneByName, getNextDetails, getPrevDetails };
