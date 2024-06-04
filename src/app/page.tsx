@@ -106,17 +106,16 @@ export function PokeApp() {
             onChange={(event) => setSearchBoxText(event.target.value)}
           />
         </label>
-        <label>
-          <button
-            type="submit"
-            onClick={(event) => {
-              event.preventDefault();
-              searchForPokemon(searchBoxText.toLowerCase());
-            }}
-          >
-            Search
-          </button>
-        </label>
+        <button
+          type="submit"
+          onClick={(event) => {
+            event.preventDefault();
+            searchForPokemon(searchBoxText.toLowerCase());
+          }}
+        >
+          Search
+        </button>
+        <button type="reset">Clear</button>
       </form>
 
       <label>
