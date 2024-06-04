@@ -72,6 +72,10 @@ export function PokeApp() {
         </thead>
         <tbody>{displayPokemon()}</tbody>
       </table>
+      <button onClick={() => setOffset(offset - resultsPerPage)}>
+        Previous
+      </button>
+      <button onClick={() => setOffset(offset + resultsPerPage)}>Next</button>
     </div>
   );
 }
