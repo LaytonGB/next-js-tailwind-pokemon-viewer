@@ -15,6 +15,16 @@ type AlertContext = {
   removeAlert: (index: number) => void;
 };
 
+const styles = {
+  success:
+    "bg-green-200 dark:bg-green-800 text-green-800 dark:text-green-200 border border-green-600",
+  error:
+    "bg-red-200 dark:bg-red-800 text-red-800 dark:text-red-200 border border-red-600",
+  warning:
+    "bg-yellow-200 dark:bg-yellow-800 text-yellow-800 dark: text-yellow-200 border border-yellow-600",
+  info: "bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-200 border border-blue-600",
+};
+
 const AlertContext = createContext({} as AlertContext);
 
 export function AlertProvider({ children }: { children: React.ReactNode }) {
@@ -51,9 +61,9 @@ export function Alert({
 }: AlertDetails & { index: number }) {
   const { removeAlert } = useAlerts();
   return (
-    <div>
-      {message}
-      <button onClick={() => removeAlert(index)}>X</button>
+    <div className={"p-4 m-4 rounded flex justify-between " + styles[type]}>
+      <span>{message}</span>
+      <button onClick={() => removeAlert(index)}>❌</button>
     </div>
   );
 }

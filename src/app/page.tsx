@@ -12,6 +12,15 @@ import {
 import AlertList, { useAlerts } from "@/components/Alert";
 import { useEffect, useState } from "react";
 
+const styles = {
+  buttonPrimary:
+    "m-2 p-2 bg-blue-300 dark:bg-blue-700 text-black dark:text-white rounded border border-blue-900 hover:border-blue-400",
+  buttonSecondary:
+    "m-2 p-2 bg-slate-300 dark:bg-slate-700 text-black dark:text-white rounded border border-slate-900 hover:border-slate-400",
+  formField:
+    "text-black dark:text-white bg-gray-300 dark:bg-gray-700 mx-2 rounded p-1",
+};
+
 export function PokeApp() {
   const { addAlert } = useAlerts();
 
@@ -32,6 +41,7 @@ export function PokeApp() {
               width={100}
               height={100}
               alt={pokemon.name}
+              className="m-auto"
             />
           </td>
           <td>
@@ -78,73 +88,106 @@ export function PokeApp() {
     setPokemonDetails(nextDetails);
   }
 
-  useEffect(() => {
-    async function fetchPokemon() {
-      try {
-        const [nextPokemonList, nextPokemonDetails] = await getAllDetails(
-          resultsPerPage,
-          0
-        );
-        setPokemonList(nextPokemonList);
-        setPokemonDetails(nextPokemonDetails);
-      } catch (error) {
-        console.error(error);
-        addAlert("Failed to fetch Pokémon", "error");
-        return [];
-      }
+  async function fetchPokemon() {
+    try {
+      const [nextPokemonList, nextPokemonDetails] = await getAllDetails(
+        resultsPerPage,
+        0
+      );
+      setPokemonList(nextPokemonList);
+      setPokemonDetails(nextPokemonDetails);
+    } catch (error) {
+      console.error(error);
+      addAlert("Failed to fetch Pokémon", "error");
+      return [];
     }
+  }
 
+  useEffect(() => {
     fetchPokemon();
   }, [resultsPerPage]);
 
   return (
-    <div>
+    <div className="w-5/6 my-8">
       <AlertList />
 
-      <h1>Pokémon Viewer</h1>
+      <h1 className="text-4xl font-bold mb-4">Pokémon Viewer</h1>
 
-      <form>
+      <div className="bg-slate-200 dark:bg-slate-800 rounded p-3 my-3">
+        <form className="mb-3">
+          <label>
+            Find Pokemon:
+            <input
+              type="text"
+              className={"form-input " + styles.formField}
+              onChange={(event) => setSearchBoxText(event.target.value)}
+            />
+          </label>
+          <button
+            type="submit"
+            className={styles.buttonPrimary}
+            onClick={(event) => {
+              event.preventDefault();
+              searchForPokemon(searchBoxText.toLowerCase());
+            }}
+          >
+            Search
+          </button>
+          <button
+            type="reset"
+            className={styles.buttonSecondary}
+            onClick={fetchPokemon}
+          >
+            Clear
+          </button>
+        </form>
+
         <label>
-          Find Pokemon:
-          <input
-            type="text"
-            onChange={(event) => setSearchBoxText(event.target.value)}
-          />
+          Results per page:
+          <select
+            className={"form-select " + styles.formField}
+            onChange={(event) => setResultsPerPage(+event.target.value)}
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
         </label>
-        <button
-          type="submit"
-          onClick={(event) => {
-            event.preventDefault();
-            searchForPokemon(searchBoxText.toLowerCase());
-          }}
-        >
-          Search
-        </button>
-        <button type="reset">Clear</button>
-      </form>
+      </div>
 
-      <label>
-        Results per page:
-        <select onChange={(event) => setResultsPerPage(+event.target.value)}>
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="50">50</option>
-        </select>
-      </label>
-
-      <table>
+      <table className="m-auto w-96 border-spacing-x-4">
         <thead>
           <tr>
             <th>Image</th>
-            <th>Name</th>
-            <th>Type</th>
+            <th className="text-left">Name</th>
+            <th className="text-left">Type</th>
           </tr>
         </thead>
         <tbody>{displayPokemon()}</tbody>
       </table>
 
-      {pokemonList.previous ? <button onClick={prevPage}>Previous</button> : ""}
-      {pokemonList.next ? <button onClick={nextPage}>Next</button> : ""}
+      <div className="flex justify-center">
+        {pokemonList.previous ? (
+          <button
+            className={styles.buttonPrimary + " w-20 mx-5"}
+            onClick={prevPage}
+          >
+            Previous
+          </button>
+        ) : (
+          <span className="w-20 mx-5" />
+        )}
+        {pokemonList.next ? (
+          <button
+            className={styles.buttonPrimary + " w-20 mx-5"}
+            onClick={nextPage}
+          >
+            Next
+          </button>
+        ) : (
+          <span className="w-20 mx-5" />
+        )}
+      </div>
     </div>
   );
 }
