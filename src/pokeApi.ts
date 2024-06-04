@@ -1,7 +1,7 @@
 import { PokemonList, PokemonResult } from "./endpointData";
 import { Pokemon } from "./endpointData";
 
-const url = "https://pokeapi.co/api/v2/pokemo";
+const url = "https://pokeapi.co/api/v2/pokemon";
 
 async function pokeFetch(params: (string | number)[]): Promise<Pokemon>;
 async function pokeFetch(params: {
