@@ -30,6 +30,9 @@ export function PokeApp() {
     {} as PokemonList
   );
   const [pokemonDetails, setPokemonDetails] = useState<Pokemon[]>([]);
+  const [currentlyFetching, setCurrentlyFetching] = useState<boolean>(false);
+
+  const imageSize = 100;
 
   function displayPokemon(): JSX.Element[] {
     return pokemonDetails.map((pokemon: Pokemon, index: number) => {
@@ -41,8 +44,8 @@ export function PokeApp() {
           <td>
             <Image
               src={pokemon.sprites.front_default}
-              width={100}
-              height={100}
+              width={imageSize}
+              height={imageSize}
               alt={pokemon.name}
               className="m-auto"
             />
@@ -64,12 +67,27 @@ export function PokeApp() {
     });
   }
 
+  function displayLoading(): JSX.Element[] {
+    return Array.from({ length: resultsPerPage }, (_, index) => (
+      <tr
+        key={index}
+        style={{ height: imageSize + "px" }}
+        className="[&:not(:last-child)]:border-b first:*:last:rounded-bl last:*:last:rounded-br even:bg-slate-100 dark:even:bg-slate-900"
+      >
+        <td key={index} colSpan={3} className="text-center">
+          Loading...
+        </td>
+      </tr>
+    ));
+  }
+
   async function searchForPokemon(name: string) {
     if (!name) {
       addAlert("Please enter a Pokémon name.", "warning");
       return;
     }
 
+    setCurrentlyFetching(true);
     try {
       const pokemon = await getOneByName(name);
       setPokemonDetails([pokemon]);
@@ -77,21 +95,27 @@ export function PokeApp() {
       console.error(error);
       addAlert(`No such pokemon, "${searchBoxText}".`, "warning");
     }
+    setCurrentlyFetching(false);
   }
 
   async function prevPage() {
+    setCurrentlyFetching(true);
     const [nextList, nextDetails] = await getPrevDetails(pokemonList);
     setPokemonList(nextList);
     setPokemonDetails(nextDetails);
+    setCurrentlyFetching(false);
   }
 
   async function nextPage() {
+    setCurrentlyFetching(true);
     const [nextList, nextDetails] = await getNextDetails(pokemonList);
     setPokemonList(nextList);
     setPokemonDetails(nextDetails);
+    setCurrentlyFetching(false);
   }
 
   async function fetchPokemon() {
+    setCurrentlyFetching(true);
     try {
       const [nextPokemonList, nextPokemonDetails] = await getAllDetails(
         resultsPerPage,
@@ -102,8 +126,8 @@ export function PokeApp() {
     } catch (error) {
       console.error(error);
       addAlert("Failed to fetch Pokémon", "error");
-      return [];
     }
+    setCurrentlyFetching(false);
   }
 
   useEffect(() => {
@@ -166,7 +190,7 @@ export function PokeApp() {
             <th className="text-left rounded-tr w-1/3">Type</th>
           </tr>
         </thead>
-        <tbody>{displayPokemon()}</tbody>
+        <tbody>{currentlyFetching ? displayLoading() : displayPokemon()}</tbody>
       </table>
 
       <div className="flex justify-center">
