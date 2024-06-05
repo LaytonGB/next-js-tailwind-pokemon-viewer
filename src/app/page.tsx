@@ -1,15 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { Pokemon, PokemonList, PokemonType } from "../endpointData";
 import {
   getAllDetails,
   getNextDetails,
-  getOneByName,
+  getOneByIdOrName,
   getPrevDetails,
 } from "@/pokeApi";
-import AlertList, { useAlerts } from "@/components/Alert";
+import { useAlerts } from "@/components/Alert";
 import { useEffect, useState } from "react";
 
 const styles = {
@@ -22,6 +23,8 @@ const styles = {
 };
 
 export function PokeApp() {
+  const router = useRouter();
+
   const { addAlert } = useAlerts();
 
   const [resultsPerPage, setResultsPerPage] = useState<number>(10);
@@ -39,7 +42,8 @@ export function PokeApp() {
       return (
         <tr
           key={index}
-          className="[&:not(:last-child)]:border-b first:*:last:rounded-bl last:*:last:rounded-br even:bg-slate-100 dark:even:bg-slate-900"
+          className="[&:not(:last-child)]:border-b first:*:last:rounded-bl last:*:last:rounded-br odd:hover:bg-slate-200 dark:odd:hover:bg-slate-800 even:bg-slate-100 even:hover:bg-slate-200 dark:even:bg-slate-900 dark:even:hover:bg-slate-800 cursor-pointer"
+          onClick={() => router.push(`/${pokemon.name}`)}
         >
           <td>
             <Image
@@ -89,7 +93,7 @@ export function PokeApp() {
 
     setCurrentlyFetching(true);
     try {
-      const pokemon = await getOneByName(name);
+      const pokemon = await getOneByIdOrName(name);
       setPokemonDetails([pokemon]);
     } catch (error) {
       console.error(error);
@@ -135,9 +139,7 @@ export function PokeApp() {
   }, [resultsPerPage]);
 
   return (
-    <div className="my-8">
-      <AlertList />
-
+    <div className="my-8 w-full sm:w-10/12 md:w-8/12 lg:w-6/12 place-self-center">
       <h1 className="text-4xl font-bold mb-4">Pokémon Viewer</h1>
 
       <div className="bg-slate-200 dark:bg-slate-800 rounded p-3 my-3">
@@ -146,7 +148,7 @@ export function PokeApp() {
             Find Pokemon:
             <input
               type="text"
-              className={"form-input " + styles.formField}
+              className={"form-input w-4/12 " + styles.formField}
               onChange={(event) => setSearchBoxText(event.target.value)}
             />
           </label>

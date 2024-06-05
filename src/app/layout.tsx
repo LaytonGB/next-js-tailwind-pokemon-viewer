@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { AlertProvider } from "@/components/Alert";
+import AlertList, { AlertProvider } from "@/components/Alert";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,11 @@ export default function RootLayout({
   return (
     <AlertProvider>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className + " flex flex-col"}>
+          <Navbar />
+          <AlertList />
+          {children}
+        </body>
       </html>
     </AlertProvider>
   );

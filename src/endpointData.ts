@@ -11,7 +11,7 @@ export interface PokemonResult {
 }
 
 export interface Pokemon {
-  abilities: Ability[];
+  abilities: AbilityData[];
   base_experience: number;
   cries: { [cryName: string]: string };
   forms: Form[];
@@ -21,7 +21,7 @@ export interface Pokemon {
   id: number;
   is_default: boolean;
   location_area_encounters: string;
-  moves: Move[];
+  moves: MoveData[];
   name: string;
   order: number;
   past_abilities: PastAbility[];
@@ -32,7 +32,7 @@ export interface Pokemon {
   types: PokemonType[];
 }
 
-export interface Ability {
+export interface AbilityData {
   ability: {
     name: string;
     url: string;
@@ -74,7 +74,7 @@ export interface HeldItemVersion {
   url: string;
 }
 
-export interface Move {
+export interface MoveData {
   move: {
     name: string;
     url: string;

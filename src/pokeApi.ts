@@ -1,7 +1,7 @@
 import { PokemonList, PokemonResult } from "./endpointData";
 import { Pokemon } from "./endpointData";
 
-const url = "https://pokeapi.co/api/v2/pokemon";
+export const endpoint = "https://pokeapi.co/api/v2/pokemon";
 
 async function pokeFetch(params: (string | number)[]): Promise<Pokemon>;
 async function pokeFetch(params: {
@@ -22,7 +22,7 @@ async function pokeFetch(
     paramStr = "/" + params;
   }
 
-  let res = await fetch(url + paramStr);
+  let res = await fetch(endpoint + paramStr);
   return await res.json();
 }
 
@@ -30,8 +30,8 @@ async function getAll(count: number, offset: number): Promise<PokemonList> {
   return await pokeFetch({ limit: count, offset });
 }
 
-async function getOneByName(name: string): Promise<Pokemon> {
-  return await pokeFetch([name]);
+async function getOneByIdOrName(idOrName: number | string): Promise<Pokemon> {
+  return await pokeFetch([idOrName]);
 }
 
 async function getByUrl(url: string): Promise<any> {
@@ -81,4 +81,4 @@ async function getAllDetails(
   return [pokemonList, pokemonDetails];
 }
 
-export { getAllDetails, getOneByName, getNextDetails, getPrevDetails };
+export { getAllDetails, getOneByIdOrName, getNextDetails, getPrevDetails };
