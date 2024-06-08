@@ -2,9 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+This was submitted as part of an interview process. I've since used the project for developing my skills with NextJS. The submitted version has tag `v1.0.0`. 
+
 To view the project, clone it locally with `git clone https://github.com/LaytonGB/next-js-tailwind-pokemon-viewer.git`.
 
-Once cloned, run one of the following:
+If you wish to checkout the tagged version, do so by running `git checkout tags/v1.0.0`
+
+Then, run one of the following:
 
 ```bash
 npm run dev
