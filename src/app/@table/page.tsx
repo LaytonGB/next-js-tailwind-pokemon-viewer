@@ -34,7 +34,11 @@ export default async function PokemonTable({
           </tr>
         </thead>
         <tbody>
-          <PokemonTableEntries pokemonDetails={pokemonDetails} />
+          <PokemonTableEntries
+            resultsPerPage={resultsPerPage}
+            pageNumber={pageNumber}
+            pokemonDetails={pokemonDetails}
+          />
         </tbody>
       </table>
 

@@ -1,6 +1,4 @@
 export default function Loading() {
-  console.log("LOADING");
-
   function displayPokemon(): JSX.Element {
     return (
       <tr className="[&:not(:last-child)]:border-b first:*:last:rounded-bl last:*:last:rounded-br odd:hover:bg-slate-200 dark:odd:hover:bg-slate-800 even:bg-slate-100 even:hover:bg-slate-200 dark:even:bg-slate-900 dark:even:hover:bg-slate-800 cursor-pointer">
