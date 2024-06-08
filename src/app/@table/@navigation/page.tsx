@@ -19,7 +19,9 @@ export default function PokemonTableNavigation({
     <div className="flex justify-center">
       {previous ? (
         <Link
-          href={`/${resultsPerPage}/${pageNumber - 1}`}
+          href={`/?resultPerPage=${resultsPerPage}&pageNumber=${
+            pageNumber - 1
+          }`}
           className={styles.buttonPrimary + " " + paddingStyle}
         >
           Previous
@@ -29,7 +31,9 @@ export default function PokemonTableNavigation({
       )}
       {next ? (
         <Link
-          href={`/${resultsPerPage}/${pageNumber + 1}`}
+          href={`/?resultPerPage=${resultsPerPage}&pageNumber=${
+            pageNumber + 1
+          }`}
           className={styles.buttonPrimary + " " + paddingStyle}
         >
           Next

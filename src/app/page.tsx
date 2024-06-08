@@ -1,13 +1,14 @@
 import PokemonTable from "./@table/page";
 
 export default async function PokeApp({
-  params,
+  searchParams,
 }: {
-  params: { resultsPerPage?: string; pageNumber?: string };
+  searchParams?: { [param: string]: string | string[] | undefined };
 }) {
-  const resultsPerPage =
-    (params.resultsPerPage && parseInt(params.resultsPerPage)) || 10;
-  const pageNumber = (params.pageNumber && parseInt(params.pageNumber)) || 1;
+  const resultsPerPage = parseInt(
+    searchParams?.resultsPerPage?.toString() ?? "10"
+  );
+  const pageNumber = parseInt(searchParams?.pageNumber?.toString() ?? "1");
 
   return (
     <div className="my-8 w-full sm:w-10/12 md:w-8/12 lg:w-6/12 place-self-center">
