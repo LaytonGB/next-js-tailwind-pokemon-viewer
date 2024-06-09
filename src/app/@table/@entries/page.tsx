@@ -6,12 +6,8 @@ import { useRouter } from "next/navigation";
 import { Pokemon, PokemonType } from "@/endpointData";
 
 export default function PokemonTableEntries({
-  resultsPerPage,
-  pageNumber,
   pokemonDetails,
 }: {
-  resultsPerPage: number;
-  pageNumber: number;
   pokemonDetails: Pokemon[];
 }) {
   const router = useRouter();
@@ -24,11 +20,7 @@ export default function PokemonTableEntries({
         <tr
           key={index}
           className="[&:not(:last-child)]:border-b first:*:last:rounded-bl last:*:last:rounded-br odd:hover:bg-slate-200 dark:odd:hover:bg-slate-800 even:bg-slate-100 even:hover:bg-slate-200 dark:even:bg-slate-900 dark:even:hover:bg-slate-800 cursor-pointer"
-          onClick={() =>
-            router.replace(
-              `/pokemon/${pokemon.id}/?resultPerPage=${resultsPerPage}&pageNumber=${pageNumber}`
-            )
-          }
+          onClick={() => router.push(`/pokemon/${pokemon.id}`)}
         >
           <td>
             <Image

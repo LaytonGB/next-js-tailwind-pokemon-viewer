@@ -12,15 +12,20 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  modal,
   children,
-}: Readonly<{
+}: {
+  modal: React.ReactNode;
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className={inter.className + " flex flex-col"}>
         <Navbar />
-        <div className="flex flex-col p-8">{children}</div>
+        <div className="flex flex-col p-8">
+          {modal}
+          {children}
+        </div>
       </body>
     </html>
   );
