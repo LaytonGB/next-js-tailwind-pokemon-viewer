@@ -1,5 +1,5 @@
 import Modal from "@/app/components/Modal";
-import PokemonDetails from "@/app/pokemon/[id]/page";
+import PokemonDetails from "@/app/components/PokemonDetails";
 
 export default async function PokemonDetailsModal({
   params,
@@ -8,7 +8,7 @@ export default async function PokemonDetailsModal({
 }) {
   return (
     <Modal>
-      <PokemonDetails params={params} />
+      <PokemonDetails id={params.id} bannerClasses="top-0" />
     </Modal>
   );
 }
