@@ -65,7 +65,7 @@ export default async function PokemonDetails({
         </div>
         <div>
           <h2 className="text-4xl py-3">Abilities</h2>
-          <div className="pl-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 grid-flow-row-dense pl-5">
             {details.abilities
               .map(
                 (ability) =>
