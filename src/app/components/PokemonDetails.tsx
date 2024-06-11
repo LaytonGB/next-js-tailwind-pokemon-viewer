@@ -24,8 +24,8 @@ export default async function PokemonDetails({
         <Image
           src={details.sprites.front_default}
           alt={details.name}
-          width={200}
-          height={200}
+          width={128}
+          height={128}
           className="bg-slate-900 rounded-full"
         />
         <div className="flex flex-col justify-around">
