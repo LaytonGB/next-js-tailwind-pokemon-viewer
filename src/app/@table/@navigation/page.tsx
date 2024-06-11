@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import styles from "@/app/styles";
 
 export default function PokemonTableNavigation({
@@ -18,26 +16,26 @@ export default function PokemonTableNavigation({
   return (
     <div className="flex justify-center">
       {previous ? (
-        <Link
+        <a
           href={`/?resultPerPage=${resultsPerPage}&pageNumber=${
             pageNumber - 1
           }`}
           className={styles.buttonPrimary + " " + paddingStyle}
         >
           Previous
-        </Link>
+        </a>
       ) : (
         <span className={paddingStyle} />
       )}
       {next ? (
-        <Link
+        <a
           href={`/?resultPerPage=${resultsPerPage}&pageNumber=${
             pageNumber + 1
           }`}
           className={styles.buttonPrimary + " " + paddingStyle}
         >
           Next
-        </Link>
+        </a>
       ) : (
         <span className={paddingStyle} />
       )}
