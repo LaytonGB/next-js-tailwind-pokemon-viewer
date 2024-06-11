@@ -1,10 +1,10 @@
 import Modal from "@/app/components/Modal";
-import UnwrappedLoading from "@/app/pokemon/[id]/loading";
+import LoadingPokemonDetails from "@/app/pokemon/[id]/loading";
 
-export default function Loading() {
+export default function LoadingPokemonDetailsModal() {
   return (
     <Modal>
-      <UnwrappedLoading />
+      <LoadingPokemonDetails />
     </Modal>
   );
 }

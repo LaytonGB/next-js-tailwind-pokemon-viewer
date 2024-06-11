@@ -1,14 +1,14 @@
-export default function Loading() {
-  function displayPokemon(): JSX.Element {
-    return (
-      <tr className="[&:not(:last-child)]:border-b first:*:last:rounded-bl last:*:last:rounded-br odd:hover:bg-slate-200 dark:odd:hover:bg-slate-800 even:bg-slate-100 even:hover:bg-slate-200 dark:even:bg-slate-900 dark:even:hover:bg-slate-800 cursor-pointer">
-        Loading...
-      </tr>
-    );
-  }
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import LoadingPokemonTableEntry from "./@entries/loading";
 
+export default function LoadingPokemonTable({
+  resultsPerPage,
+}: {
+  resultsPerPage: number;
+}) {
   return (
-    <div>
+    <SkeletonTheme baseColor="#4B5563" highlightColor="#667284">
       <table className="m-auto w-full">
         <thead className="border-b border-separate">
           <tr className="bg-slate-100 dark:bg-slate-900">
@@ -17,8 +17,10 @@ export default function Loading() {
             <th className="text-left rounded-tr w-1/3">Type</th>
           </tr>
         </thead>
-        <tbody>{displayPokemon()}</tbody>
+        <tbody>
+          <LoadingPokemonTableEntry resultsPerPage={resultsPerPage} />
+        </tbody>
       </table>
-    </div>
+    </SkeletonTheme>
   );
 }

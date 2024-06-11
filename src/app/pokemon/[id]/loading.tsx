@@ -1,11 +1,11 @@
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-export default function Loading() {
+export default function LoadingPokemonDetails() {
   return (
     <SkeletonTheme baseColor="#4B5563" highlightColor="#667284">
       <div className="flex flex-col">
-        <div className="flex flex-row place-items-center gap-5 bg-slate-700 border-b border-slate-500 p-5 sticky top-0 absolute">
+        <div className="flex flex-row place-items-center gap-5 bg-slate-700 border-b border-slate-500 p-5 sticky top-0">
           <Skeleton circle width={200} height={200} />
           <div className="flex flex-col justify-around">
             <h1 className="text-6xl mb-3">

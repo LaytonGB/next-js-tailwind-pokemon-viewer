@@ -23,6 +23,8 @@ export default async function PokemonTable({
     )
   );
 
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+
   return (
     <div>
       <table className="m-auto w-full">

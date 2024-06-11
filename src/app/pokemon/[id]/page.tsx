@@ -13,7 +13,7 @@ export default async function PokemonDetails({
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-row place-items-center gap-5 bg-slate-700 border-b border-slate-500 p-5 sticky top-0 absolute">
+      <div className="flex flex-row place-items-center gap-5 bg-slate-700 border-b border-slate-500 p-5 sticky top-14">
         <Image
           src={details.sprites.front_default}
           alt={details.name}
