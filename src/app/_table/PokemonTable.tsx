@@ -1,6 +1,6 @@
 import { Pokemon, PokemonList, PokemonResult } from "@/endpointData";
-import PokemonTableNavigation from "./@navigation/page";
-import PokemonTableEntries from "./@entries/page";
+import PokemonTableNavigation from "./PokemonTableNavigation";
+import PokemonTableEntries from "./Entries";
 
 export default async function PokemonTable({
   resultsPerPage,

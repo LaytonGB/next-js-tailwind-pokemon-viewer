@@ -1,6 +1,6 @@
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import LoadingPokemonTableEntry from "./@entries/loading";
+import LoadingPokemonTableEntry from "./LoadingPokemonTableEntry";
 
 export default function LoadingPokemonTable({
   resultsPerPage,

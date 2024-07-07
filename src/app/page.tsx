@@ -1,4 +1,4 @@
-import PokemonTable from "./@table/page";
+import PokemonTable from "./_table/PokemonTable";
 
 export default async function PokeApp({
   searchParams,

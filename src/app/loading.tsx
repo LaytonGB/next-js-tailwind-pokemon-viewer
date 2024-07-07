@@ -1,4 +1,4 @@
-import LoadingPokemonTable from "@/app/@table/loading";
+import LoadingPokemonTable from "@/app/_table/LoadingPokemonTableEntry";
 
 export default function LoadingPokeApp({
   searchParams,
